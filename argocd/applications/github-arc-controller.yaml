@@ -14,10 +14,6 @@ spec:
     helm:
       releaseName: arc-controller
       values: |
-        image:
-          repository: ghcr.io/actions/actions-runner-controller
-          tag: "latest"
-        
         replicaCount: 1
         
         resources:
