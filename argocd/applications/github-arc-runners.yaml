@@ -22,7 +22,7 @@ spec:
           name: arc-gha-rs-controller
           namespace: arc-system
         minRunners: 1
-        
+
         template:
           spec:
             containers:
@@ -34,7 +34,7 @@ spec:
     namespace: arc-runners
   syncPolicy:
     automated:
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false
     syncOptions:
       - CreateNamespace=true
