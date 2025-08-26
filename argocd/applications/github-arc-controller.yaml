@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: github-arc-controller
+  namespace: openshift-gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: ghcr.io/actions/actions-runner-controller-charts
+    chart: gha-runner-scale-set-controller
+    targetRevision: 0.9.3
+    helm:
+      releaseName: arc-controller
+      values: |
+        image:
+          repository: ghcr.io/actions/actions-runner-controller
+          tag: "latest"
+        
+        replicaCount: 1
+        
+        env:
+          - name: CONTROLLER_MANAGER_CONTAINER_IMAGE
+            value: ghcr.io/actions/actions-runner-controller:latest
+          - name: CONTROLLER_MANAGER_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        
+        nodeSelector: {}
+        tolerations: []
+        affinity: {}
+        
+        serviceAccount:
+          create: true
+          annotations: {}
+          name: ""
+        
+        rbac:
+          create: true
+        
+        metrics:
+          controllerManagerAddr: ":8080"
+          listenAddr: ":8080"
+          
+        webhook:
+          create: true
+          port: 9443
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: arc-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
