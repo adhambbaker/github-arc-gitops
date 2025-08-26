@@ -15,10 +15,6 @@ spec:
       releaseName: arc-controller
       values: |
         # Minimal configuration for OpenShift compatibility
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 1001
-          fsGroup: 1001
         
         resources:
           limits:
