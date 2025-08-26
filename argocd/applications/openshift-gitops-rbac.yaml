@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openshift-gitops-rbac
+  namespace: openshift-gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/adhambbaker/github-arc-gitops
+    targetRevision: HEAD
+    path: openshift
+    directory:
+      include: "argocd-rbac.yaml"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-gitops
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRole
+    jsonPointers:
+    - /metadata/resourceVersion
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRoleBinding
+    jsonPointers:
+    - /metadata/resourceVersion
