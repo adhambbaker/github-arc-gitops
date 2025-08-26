@@ -32,9 +32,9 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: arc-runners
-  syncPolicy:
-    automated:
-      prune: false
-      selfHeal: false
+  # syncPolicy:
+  #   automated:
+  #     prune: false
+  #     selfHeal: false
     syncOptions:
       - CreateNamespace=true
