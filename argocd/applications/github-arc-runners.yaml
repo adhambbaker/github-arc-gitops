@@ -13,36 +13,21 @@ spec:
     targetRevision: "0.9.3"
     helm:
       values: |
-        runnerScaleSetName: arc-runner-set
-        githubConfigUrl: https://github.com/adhambbaker
-        githubConfigSecret: github-token
-        
-        minRunners: 0
-        maxRunners: 3
-        
-        # OpenShift compatibility
-        template:
-          spec:
-            securityContext:
-              runAsNonRoot: true
-              fsGroup: 1001
-            containers:
+      runnerScaleSetName: arc-runner-set
+      githubConfigUrl: https://github.com/adhambbaker
+      githubConfigSecret: github-token
+      controllerServiceAccount:
+        namespace: arc-system
+      
+      minRunners: 0
+      maxRunners: 3
+      
+      template:
+        spec:
+          containers:
             - name: runner
-              securityContext:
-                runAsUser: 1001
-                runAsNonRoot: true
-                allowPrivilegeEscalation: false
-                readOnlyRootFilesystem: false
-                capabilities:
-                  drop:
-                  - ALL
-              resources:
-                requests:
-                  cpu: 100m
-                  memory: 256Mi
-                limits:
-                  cpu: 500m
-                  memory: 512Mi
+              image: ghcr.io/actions/actions-runner:latest
+              command: ["/home/runner/run.sh"]
   destination:
     server: https://kubernetes.default.svc
     namespace: arc-runners
