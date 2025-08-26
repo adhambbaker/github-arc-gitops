@@ -14,7 +14,7 @@ spec:
     helm:
       releaseName: arc-runner-set
       values:
-        runnerScaleSetName: arc-runner-set
+        runnerScaleSetName: ""
         githubConfigUrl: https://github.com/adhambbaker
         githubConfigSecret:
           github_token: xx
@@ -22,9 +22,6 @@ spec:
         controllerServiceAccount:
           name: arc-gha-rs-controller
           namespace: arc-system
-        
-        minRunners: 1
-        maxRunners: 3
         
         template:
           spec:
