@@ -13,6 +13,21 @@ spec:
       name: ephemeralrunnersets.actions.github.com
       jsonPointers:
         - /status
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      name: ephemeralrunners.actions.github.com
+      jsonPointers:
+        - /status
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      name: autoscalingrunnersets.actions.github.com
+      jsonPointers:
+        - /status
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      name: autoscalinglisteners.actions.github.com
+      jsonPointers:
+        - /status
   source:
     repoURL: ghcr.io/actions/actions-runner-controller-charts
     chart: gha-runner-scale-set-controller
