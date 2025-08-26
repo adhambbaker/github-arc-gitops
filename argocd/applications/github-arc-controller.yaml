@@ -76,14 +76,3 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-      - RespectIgnoreDifferences=true
-      - Replace=true
-  ignoreDifferences:
-  - group: apps
-    kind: Deployment
-    jsonPointers:
-    - /spec/template/spec/containers/0/env
-  - group: ""
-    kind: Service
-    jsonPointers:
-    - /spec/ports
