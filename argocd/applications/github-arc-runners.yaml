@@ -13,28 +13,6 @@ spec:
     targetRevision: 0.9.3
     helm:
       releaseName: arc-runners
-      values: |
-      runnerScaleSetName: "arc-runner-set"
-      
-      githubConfigUrl: "https://github.com/adhambbaker"
-      # githubConfigSecret: "github-token"
-      
-      # Basic runner configuration
-      minRunners: 0
-      maxRunners: 5
-      
-      # Container mode for Kubernetes jobs
-      containerMode:
-        type: "kubernetes"
-      
-      # Resource limits
-      resources:
-        limits:
-          cpu: "1"
-          memory: "2Gi"
-        requests:
-          cpu: "100m"
-          memory: "256Mi"
   destination:
     server: https://kubernetes.default.svc
     namespace: arc-runners
