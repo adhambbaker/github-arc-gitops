@@ -1,0 +1,39 @@
+# Prometheus ServiceMonitor for ARC Controller
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: arc-controller
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: arc-controller
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gha-runner-scale-set-controller
+  namespaceSelector:
+    matchNames:
+    - arc-system
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
+---
+# Prometheus ServiceMonitor for ARC Runners
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: arc-runners
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: arc-runners
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gha-runner-scale-set
+  namespaceSelector:
+    matchNames:
+    - arc-runners
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
