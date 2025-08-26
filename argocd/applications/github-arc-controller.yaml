@@ -20,6 +20,14 @@ spec:
         
         replicaCount: 1
         
+        env:
+          - name: CONTROLLER_MANAGER_CONTAINER_IMAGE
+            value: ghcr.io/actions/actions-runner-controller:latest
+          - name: CONTROLLER_MANAGER_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        
         resources:
           limits:
             cpu: 500m
@@ -51,12 +59,10 @@ spec:
           seccompProfile:
             type: RuntimeDefault
         
-        # Metrics configuration
         metrics:
-          enable: true
-          port: 8080
+          controllerManagerAddr: ":8080"
+          listenAddr: ":8080"
           
-        # Webhook configuration
         webhook:
           create: true
           port: 9443
@@ -76,3 +82,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true
