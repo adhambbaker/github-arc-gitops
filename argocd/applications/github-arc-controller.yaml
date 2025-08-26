@@ -27,7 +27,8 @@ spec:
       kind: CustomResourceDefinition
       name: autoscalinglisteners.actions.github.com
       jsonPointers:
-        - /preserveUnknownFields
+        - /status
+        - /spec/preserveUnknownFields
   source:
     repoURL: ghcr.io/actions/actions-runner-controller-charts
     chart: gha-runner-scale-set-controller
