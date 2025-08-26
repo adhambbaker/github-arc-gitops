@@ -12,6 +12,7 @@ spec:
     chart: gha-runner-scale-set-controller
     targetRevision: "0.9.3"
     helm:
+      releaseName: arc
       values: |
         # Minimal configuration for OpenShift compatibility
       resources:
