@@ -11,6 +11,8 @@ spec:
     repoURL: https://github.com/adhambbaker/github-arc
     targetRevision: main
     path: openshift
+    directory:
+      include: "grafana-scc.yaml"
   destination:
     server: https://kubernetes.default.svc
     namespace: openshift-gitops
