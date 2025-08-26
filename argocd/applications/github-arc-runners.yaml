@@ -15,7 +15,8 @@ spec:
       values: |
       runnerScaleSetName: arc-runner-set
       githubConfigUrl: https://github.com/adhambbaker
-      githubConfigSecret: github-token
+      githubConfigSecret:
+        github_token: "xx"
       controllerServiceAccount:
         namespace: arc-system
       
