@@ -16,7 +16,7 @@ spec:
       values: |
         githubConfigUrl: https://github.com/adhambbaker/github-arc-gitops
         githubConfigSecret:
-          github_token: xx
+          github_token: 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
           # Controller service account configuration
         controllerServiceAccount:
           name: arc-gha-rs-controller
