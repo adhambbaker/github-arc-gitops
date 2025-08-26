@@ -12,23 +12,23 @@ spec:
     chart: gha-runner-scale-set
     targetRevision: "0.9.3"
     helm:
-      values: |
-      runnerScaleSetName: arc-runner-set
-      githubConfigUrl: https://github.com/adhambbaker
-      githubConfigSecret:
-        github_token: "xx"
-      controllerServiceAccount:
-        namespace: arc-system
-      
-      minRunners: 0
-      maxRunners: 3
-      
-      template:
-        spec:
-          containers:
-            - name: runner
-              image: ghcr.io/actions/actions-runner:latest
-              command: ["/home/runner/run.sh"]
+      values:
+        runnerScaleSetName: arc-runner-set
+        githubConfigUrl: https://github.com/adhambbaker
+        githubConfigSecret:
+          github_token: "xx"
+        controllerServiceAccount:
+          namespace: arc-system
+        
+        minRunners: 0
+        maxRunners: 3
+        
+        template:
+          spec:
+            containers:
+              - name: runner
+                image: ghcr.io/actions/actions-runner:latest
+                command: ["/home/runner/run.sh"]
   destination:
     server: https://kubernetes.default.svc
     namespace: arc-runners
