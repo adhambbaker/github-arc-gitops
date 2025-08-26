@@ -32,7 +32,7 @@ spec:
               command: ["/home/runner/run.sh"]
   destination:
     server: https://kubernetes.default.svc
-    namespace: arc-runners
+    namespace: arc-system
   syncPolicy:
     automated:
       prune: true
