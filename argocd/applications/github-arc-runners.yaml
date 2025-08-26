@@ -13,7 +13,7 @@ spec:
     targetRevision: "0.12.1"
     helm:
       releaseName: arc-runner-set
-      values: |
+      values:
       runnerScaleSetName: arc-runner-set
       githubConfigUrl: https://github.com/adhambbaker
       githubConfigSecret:
