@@ -19,7 +19,7 @@ spec:
         github_token: xx
       controllerServiceAccount:
         namespace: arc-system
-        name: github-arc-controller-gha-rs-controller
+        name: arc-gha-rs-controller
       
       minRunners: 0
       maxRunners: 3
@@ -32,7 +32,7 @@ spec:
               command: ["/home/runner/run.sh"]
   destination:
     server: https://kubernetes.default.svc
-    namespace: arc-system
+    namespace: arc-runners
   syncPolicy:
     automated:
       prune: true
