@@ -17,8 +17,8 @@ spec:
       githubConfigUrl: https://github.com/adhambbaker
       githubConfigSecret:
         github_token: xx
-      controllerServiceAccount:
-        namespace: arc-system
+      # controllerServiceAccount:
+      #   namespace: arc-system
       
       minRunners: 0
       maxRunners: 3
