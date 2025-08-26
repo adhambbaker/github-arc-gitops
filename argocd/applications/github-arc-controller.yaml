@@ -10,18 +10,17 @@ spec:
   source:
     repoURL: ghcr.io/actions/actions-runner-controller-charts
     chart: gha-runner-scale-set-controller
-    targetRevision: 0.12.1
+    targetRevision: "0.9.3"
     helm:
-      releaseName: arc-controller
       values: |
-      replicaCount: 1
-
-      image:
-        repository: "ghcr.io/actions/gha-runner-scale-set-controller"
-        pullPolicy: IfNotPresent
-        # Overrides the image tag whose default is the chart appVersion.
-        tag: ""
-
+        # Minimal configuration for OpenShift compatibility
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: arc-system
@@ -31,3 +30,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
