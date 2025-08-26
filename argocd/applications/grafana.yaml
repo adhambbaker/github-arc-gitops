@@ -1,0 +1,187 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: openshift-gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: grafana
+    targetRevision: 8.5.2
+    helm:
+      releaseName: grafana
+      values: |
+        # Admin credentials
+        adminUser: admin
+        adminPassword: admin  # Change this in production
+        
+        # Persistence
+        persistence:
+          enabled: true
+          type: pvc
+          size: 10Gi
+          storageClassName: ""  # Use default storage class in OpenShift
+          accessModes:
+            - ReadWriteOnce
+        
+        # Service configuration
+        service:
+          type: ClusterIP
+          port: 80
+          targetPort: 3000
+          
+        # OpenShift Route configuration (instead of Ingress)
+        route:
+          enabled: true
+          host: ""  # Will be auto-generated
+          annotations: {}
+          tls:
+            enabled: true
+            termination: edge
+            
+        # Ingress configuration (disabled for OpenShift)
+        ingress:
+          enabled: false
+        
+        # Resources
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        
+        # OpenShift compatible security context
+        securityContext:
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        
+        containerSecurityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          seccompProfile:
+            type: RuntimeDefault
+        
+        # Environment variables
+        env:
+          GF_SECURITY_ADMIN_PASSWORD: admin
+          GF_USERS_ALLOW_SIGN_UP: false
+          GF_INSTALL_PLUGINS: "grafana-kubernetes-app"
+        
+        # Grafana configuration
+        grafana.ini:
+          paths:
+            data: /var/lib/grafana/
+            logs: /var/log/grafana
+            plugins: /var/lib/grafana/plugins
+            provisioning: /etc/grafana/provisioning
+          analytics:
+            check_for_updates: true
+          log:
+            mode: console
+          grafana_net:
+            url: https://grafana.net
+          server:
+            domain: "{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ .Values.ingress.hosts | first }}{{ end }}"
+        
+        # Datasources configuration
+        datasources:
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+            - name: Prometheus
+              type: prometheus
+              url: http://prometheus-server.monitoring.svc.cluster.local
+              access: proxy
+              isDefault: true
+        
+        # Dashboards configuration
+        dashboardProviders:
+          dashboardproviders.yaml:
+            apiVersion: 1
+            providers:
+            - name: 'default'
+              orgId: 1
+              folder: ''
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/default
+        
+        dashboards:
+          default:
+            kubernetes-cluster-monitoring:
+              gnetId: 7249
+              revision: 1
+              datasource: Prometheus
+            kubernetes-pod-monitoring:
+              gnetId: 6417
+              revision: 1
+              datasource: Prometheus
+            github-actions-runner-controller:
+              gnetId: 17045
+              revision: 2
+              datasource: Prometheus
+        
+        # Service account
+        serviceAccount:
+          create: true
+          annotations: {}
+          name: ""
+        
+        # RBAC
+        rbac:
+          create: true
+          pspEnabled: false
+        
+        # Node selection
+        nodeSelector: {}
+        tolerations: []
+        affinity: {}
+        
+        # Additional containers (sidecar for dashboard provisioning)
+        sidecar:
+          dashboards:
+            enabled: true
+            label: grafana_dashboard
+            folder: /tmp/dashboards
+            provider:
+              foldersFromFilesStructure: true
+          datasources:
+            enabled: true
+            label: grafana_datasource
+        
+        # Image configuration
+        image:
+          repository: grafana/grafana
+          tag: "11.2.0"
+          pullPolicy: IfNotPresent
+        
+        # Init containers
+        initChownData:
+          enabled: true
+          image:
+            repository: busybox
+            tag: "1.31.1"
+            pullPolicy: IfNotPresent
+          resources: {}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true
