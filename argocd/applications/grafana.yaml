@@ -10,178 +10,70 @@ spec:
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: grafana
-    targetRevision: 8.5.2
+    targetRevision: "8.5.2"
     helm:
       releaseName: grafana
       values: |
-        # Admin credentials
+        # Basic admin credentials
         adminUser: admin
-        adminPassword: admin  # Change this in production
+        adminPassword: admin123
         
-        # Persistence - adjusted for OpenShift
+        # Minimal persistence
         persistence:
           enabled: true
-          type: pvc
-          size: 10Gi
-          storageClassName: ""  # Use default storage class in OpenShift
+          size: 5Gi
           accessModes:
             - ReadWriteOnce
-          # OpenShift compatibility
-          securityContext:
-            runAsUser: 1001
-            fsGroup: 1001
         
-        # Service configuration
+        # Service
         service:
           type: ClusterIP
           port: 80
-          targetPort: 3000
-          
-        # OpenShift Route configuration (instead of Ingress)
-        route:
-          enabled: true
-          host: ""  # Will be auto-generated
-          annotations: {}
-          tls:
-            enabled: true
-            termination: edge
-            
-        # Ingress configuration (disabled for OpenShift)
+        
+        # Disable ingress
         ingress:
           enabled: false
         
-        # Resources
+        # Minimal resources
         resources:
-          limits:
-            cpu: 500m
-            memory: 512Mi
           requests:
             cpu: 100m
             memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
         
-        # OpenShift compatible security context
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 1001
-          fsGroup: 1001
-          seccompProfile:
-            type: RuntimeDefault
+        # Let OpenShift handle security context automatically
+        securityContext: {}
+        containerSecurityContext: {}
         
-        containerSecurityContext:
-          runAsNonRoot: true
-          runAsUser: 1001
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          seccompProfile:
-            type: RuntimeDefault
-        
-        # Environment variables
-        env:
-          GF_SECURITY_ADMIN_PASSWORD: admin
-          GF_USERS_ALLOW_SIGN_UP: false
-          GF_INSTALL_PLUGINS: "grafana-kubernetes-app"
-        
-        # Grafana configuration
-        grafana.ini:
-          paths:
-            data: /var/lib/grafana/
-            logs: /var/log/grafana
-            plugins: /var/lib/grafana/plugins
-            provisioning: /etc/grafana/provisioning
-          analytics:
-            check_for_updates: true
-          log:
-            mode: console
-          grafana_net:
-            url: https://grafana.net
-          server:
-            domain: "{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ .Values.ingress.hosts | first }}{{ end }}"
-        
-        # Datasources configuration
-        datasources:
-          datasources.yaml:
-            apiVersion: 1
-            datasources:
-            - name: Prometheus
-              type: prometheus
-              url: http://prometheus-server.monitoring.svc.cluster.local
-              access: proxy
-              isDefault: true
-        
-        # Dashboards configuration
-        dashboardProviders:
-          dashboardproviders.yaml:
-            apiVersion: 1
-            providers:
-            - name: 'default'
-              orgId: 1
-              folder: ''
-              type: file
-              disableDeletion: false
-              editable: true
-              options:
-                path: /var/lib/grafana/dashboards/default
-        
-        dashboards:
-          default:
-            kubernetes-cluster-monitoring:
-              gnetId: 7249
-              revision: 1
-              datasource: Prometheus
-            kubernetes-pod-monitoring:
-              gnetId: 6417
-              revision: 1
-              datasource: Prometheus
-            github-actions-runner-controller:
-              gnetId: 17045
-              revision: 2
-              datasource: Prometheus
-        
-        # Service account with OpenShift annotations
-        serviceAccount:
-          create: true
-          annotations:
-            serviceaccounts.openshift.io/oauth-redirectreference.grafana: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"grafana"}}'
-          name: grafana
-        
-        # RBAC
-        rbac:
-          create: true
-          pspEnabled: false
-        
-        # Node selection
-        nodeSelector: {}
-        tolerations: []
-        affinity: {}
-        
-        # Additional containers (simplified for OpenShift)
-        sidecar:
-          dashboards:
-            enabled: false  # Disabled to avoid security context issues
-          datasources:
-            enabled: false  # Disabled to avoid security context issues
-        
-        # Image configuration
-        image:
-          repository: grafana/grafana
-          tag: "11.2.0"
-          pullPolicy: IfNotPresent
-        
-        # Init containers - disabled for OpenShift compatibility
+        # Disable all init containers and sidecars
         initChownData:
           enabled: false
         
-        # Disable download dashboards init container  
-        downloadDashboardsImage:
-          repository: curlimages/curl
-          tag: 7.85.0
-          pullPolicy: IfNotPresent
+        sidecar:
+          dashboards:
+            enabled: false
+          datasources:
+            enabled: false
         
-        # Test framework disabled
+        # Disable test framework
         testFramework:
           enabled: false
+        
+        # Disable download dashboards
+        downloadDashboards:
+          enabled: false
+        
+        # Basic service account
+        serviceAccount:
+          create: true
+          name: grafana
+        
+        # Disable RBAC to avoid conflicts
+        rbac:
+          create: false
+          pspEnabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
@@ -191,5 +83,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true
-      - RespectIgnoreDifferences=true
