@@ -18,7 +18,7 @@ spec:
         adminUser: admin
         adminPassword: admin  # Change this in production
         
-        # Persistence
+        # Persistence - adjusted for OpenShift
         persistence:
           enabled: true
           type: pvc
@@ -26,6 +26,10 @@ spec:
           storageClassName: ""  # Use default storage class in OpenShift
           accessModes:
             - ReadWriteOnce
+          # OpenShift compatibility
+          securityContext:
+            runAsUser: 1001
+            fsGroup: 1001
         
         # Service configuration
         service:
@@ -58,11 +62,14 @@ spec:
         # OpenShift compatible security context
         securityContext:
           runAsNonRoot: true
+          runAsUser: 1001
+          fsGroup: 1001
           seccompProfile:
             type: RuntimeDefault
         
         containerSecurityContext:
           runAsNonRoot: true
+          runAsUser: 1001
           allowPrivilegeEscalation: false
           capabilities:
             drop:
@@ -132,11 +139,12 @@ spec:
               revision: 2
               datasource: Prometheus
         
-        # Service account
+        # Service account with OpenShift annotations
         serviceAccount:
           create: true
-          annotations: {}
-          name: ""
+          annotations:
+            serviceaccounts.openshift.io/oauth-redirectreference.grafana: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"grafana"}}'
+          name: grafana
         
         # RBAC
         rbac:
@@ -148,17 +156,12 @@ spec:
         tolerations: []
         affinity: {}
         
-        # Additional containers (sidecar for dashboard provisioning)
+        # Additional containers (simplified for OpenShift)
         sidecar:
           dashboards:
-            enabled: true
-            label: grafana_dashboard
-            folder: /tmp/dashboards
-            provider:
-              foldersFromFilesStructure: true
+            enabled: false  # Disabled to avoid security context issues
           datasources:
-            enabled: true
-            label: grafana_datasource
+            enabled: false  # Disabled to avoid security context issues
         
         # Image configuration
         image:
@@ -166,14 +169,19 @@ spec:
           tag: "11.2.0"
           pullPolicy: IfNotPresent
         
-        # Init containers
+        # Init containers - disabled for OpenShift compatibility
         initChownData:
-          enabled: true
-          image:
-            repository: busybox
-            tag: "1.31.1"
-            pullPolicy: IfNotPresent
-          resources: {}
+          enabled: false
+        
+        # Disable download dashboards init container  
+        downloadDashboardsImage:
+          repository: curlimages/curl
+          tag: 7.85.0
+          pullPolicy: IfNotPresent
+        
+        # Test framework disabled
+        testFramework:
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
