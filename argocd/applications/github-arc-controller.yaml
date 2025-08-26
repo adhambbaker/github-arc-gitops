@@ -48,6 +48,17 @@ spec:
         rbac:
           create: true
         
+        # OpenShift specific security context
+        securityContext:
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        
+        podSecurityContext:
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        
         metrics:
           controllerManagerAddr: ":8080"
           listenAddr: ":8080"
@@ -55,6 +66,12 @@ spec:
         webhook:
           create: true
           port: 9443
+        
+        # OpenShift specific configurations
+        openshift:
+          enabled: true
+          route:
+            enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: arc-system
@@ -65,3 +82,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true
