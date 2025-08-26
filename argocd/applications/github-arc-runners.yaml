@@ -17,7 +17,7 @@ spec:
       runnerScaleSetName: "arc-runner-set"
       
       githubConfigUrl: "https://github.com/adhambbaker"
-      githubConfigSecret: "github-token"
+      # githubConfigSecret: "github-token"
       
       # Basic runner configuration
       minRunners: 0
