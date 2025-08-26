@@ -18,12 +18,9 @@ spec:
         adminUser: admin
         adminPassword: admin123
         
-        # Minimal persistence
+        # Completely disable persistence for now to avoid permission issues
         persistence:
-          enabled: true
-          size: 5Gi
-          accessModes:
-            - ReadWriteOnce
+          enabled: false
         
         # Service
         service:
@@ -43,37 +40,65 @@ spec:
             cpu: 200m
             memory: 256Mi
         
-        # Let OpenShift handle security context automatically
-        securityContext: {}
-        containerSecurityContext: {}
+        # Completely empty security contexts - let OpenShift handle everything
+        securityContext: null
+        containerSecurityContext: null
+        podSecurityContext: null
         
-        # Disable all init containers and sidecars
+        # Disable ALL init containers
         initChownData:
           enabled: false
         
+        # Disable download dashboards completely
+        downloadDashboards:
+          enabled: false
+        downloadDashboardsImage:
+          enabled: false
+        
+        # Disable all sidecars
         sidecar:
           dashboards:
             enabled: false
           datasources:
             enabled: false
+          image:
+            tag: ""
         
         # Disable test framework
         testFramework:
           enabled: false
         
-        # Disable download dashboards
-        downloadDashboards:
-          enabled: false
+        # Use minimal image
+        image:
+          repository: grafana/grafana
+          tag: "10.4.0"  # Use older, more stable version
+          pullPolicy: IfNotPresent
         
-        # Basic service account
+        # Basic service account without annotations
         serviceAccount:
           create: true
           name: grafana
+          annotations: {}
         
-        # Disable RBAC to avoid conflicts
+        # Disable RBAC
         rbac:
           create: false
           pspEnabled: false
+        
+        # Override default pod annotations to remove seccomp
+        podAnnotations: {}
+        
+        # Disable all extra features
+        plugins: []
+        notifiers: {}
+        alerting: {}
+        
+        # Simple grafana.ini without security overrides
+        grafana.ini:
+          server:
+            root_url: "/"
+          users:
+            allow_sign_up: false
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
