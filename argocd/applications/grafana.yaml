@@ -1,87 +1,87 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: grafana
-  namespace: openshift-gitops
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: https://grafana.github.io/helm-charts
-    chart: grafana
-    targetRevision: "8.5.2"
-    helm:
-      releaseName: grafana
-      values: |
-        # Simple admin credentials
-        adminUser: admin
-        adminPassword: admin123
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: grafana
+#   namespace: openshift-gitops
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://grafana.github.io/helm-charts
+#     chart: grafana
+#     targetRevision: "8.5.2"
+#     helm:
+#       releaseName: grafana
+#       values: |
+#         # Simple admin credentials
+#         adminUser: admin
+#         adminPassword: admin123
         
-        # Minimal persistence
-        persistence:
-          enabled: true
-          size: 5Gi
-          accessModes:
-            - ReadWriteOnce
+#         # Minimal persistence
+#         persistence:
+#           enabled: true
+#           size: 5Gi
+#           accessModes:
+#             - ReadWriteOnce
         
-        # Service configuration
-        service:
-          type: ClusterIP
-          port: 80
+#         # Service configuration
+#         service:
+#           type: ClusterIP
+#           port: 80
         
-        # Disable ingress (use OpenShift routes instead)
-        ingress:
-          enabled: false
+#         # Disable ingress (use OpenShift routes instead)
+#         ingress:
+#           enabled: false
         
-        # Simple resources
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 200m
-            memory: 256Mi
+#         # Simple resources
+#         resources:
+#           requests:
+#             cpu: 100m
+#             memory: 128Mi
+#           limits:
+#             cpu: 200m
+#             memory: 256Mi
         
-        # OpenShift security context
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 1001
-          fsGroup: 1001
+#         # OpenShift security context
+#         securityContext:
+#           runAsNonRoot: true
+#           runAsUser: 1001
+#           fsGroup: 1001
         
-        # Disable all init containers and sidecars
-        initChownData:
-          enabled: false
+#         # Disable all init containers and sidecars
+#         initChownData:
+#           enabled: false
         
-        sidecar:
-          dashboards:
-            enabled: false
-          datasources:
-            enabled: false
+#         sidecar:
+#           dashboards:
+#             enabled: false
+#           datasources:
+#             enabled: false
         
-        # Disable test framework
-        testFramework:
-          enabled: false
+#         # Disable test framework
+#         testFramework:
+#           enabled: false
         
-        # Basic Grafana configuration
-        grafana.ini:
-          server:
-            root_url: "/"
-          security:
-            admin_user: admin
-            admin_password: admin123
+#         # Basic Grafana configuration
+#         grafana.ini:
+#           server:
+#             root_url: "/"
+#           security:
+#             admin_user: admin
+#             admin_password: admin123
         
-        # Service account
-        serviceAccount:
-          create: true
-          name: grafana
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: monitoring
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+#         # Service account
+#         serviceAccount:
+#           create: true
+#           name: grafana
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: monitoring
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - ServerSideApply=true
