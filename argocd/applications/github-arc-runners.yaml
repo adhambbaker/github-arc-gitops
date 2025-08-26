@@ -19,7 +19,7 @@ spec:
         github_token: xx
       controllerServiceAccount:
         namespace: arc-system
-        name: gha-runner-scale-set-controller
+        name: github-arc-controller-gha-rs-controller
       
       minRunners: 0
       maxRunners: 3
