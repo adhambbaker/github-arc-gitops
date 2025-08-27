@@ -23,95 +23,94 @@ spec:
           namespace: arc-system
         minRunners: 1
 
-        # template:
-        #   spec:
-        #     containers:
-        #       - name: runner
-        #         image: ghcr.io/actions/actions-runner:latest
-        #         command: ["/home/runner/run.sh"]
         template:
           spec:
-            initContainers:
-            - name: init-dind-externals
-              resources:
-                requests:
-                  memory: 100Mi
-                limits:
-                  memory: 8Gi
-              image: ghcr.io/actions/actions-runner:latest
-              command: ["cp", "-r", "-v", "/home/runner/externals/.", "/home/runner/tmpDir/"]
-              volumeMounts:
-                - name: dind-externals
-                  mountPath: /home/runner/tmpDir
+          spec:
             containers:
-            - name: runner
-              resources:
-                requests:
-                  memory: 100Mi
-                limits:
-                  memory: 5Gi
-              image: ghcr.io/actions/actions-runner:latest
-              command: ["/home/runner/run.sh"]
-              env:
-                - name: DOCKER_HOST
-                  value: unix:///var/run/docker.sock
-              volumeMounts:
-                - name: work
-                  mountPath: /home/runner/_work
-                - name: dind-sock
-                  mountPath: /var/run
-            - name: dind
-              resources:
-                requests:
-                  memory: 100Mi
-                limits:
-                  memory: 8Gi
-              image: ghcr.io/actions/actions-runner:latest
-              args:
-                - dockerd
-                - --host=unix:///var/run/docker.sock
-                - --group=$(DOCKER_GROUP_GID)
-              env:
-                - name: DOCKER_GROUP_GID
-                  value: "123"
-              securityContext:
-                privileged: true
-              volumeMounts:
-                - name: work
-                  mountPath: /home/runner/_work
-                - name: var-lib-docker
-                  mountPath: /var/lib/docker
-                - name: dind-sock
-                  mountPath: /var/run
-                - name: dind-externals
-                  mountPath: /home/runner/externals
-                - mountPath: /etc/docker/daemon.json
-                  name: daemon-json
-                  readOnly: true
-                  subPath: daemon.json
-            nodeSelector:
-              kubernetes.io/os: linux
-            imagePullSecrets:
-              - name: ""
-            volumes:
-            - name: work
-              emptyDir: {}
-            - name: var-lib-docker
-              ephemeral:
-                volumeClaimTemplate:
-                  spec:
-                    accessModes:
-                      - ReadWriteOnce
-                    resources:
-                      requests:
-                        storage: 10Gi
-            - name: dind-sock
-              emptyDir: {}
-            - name: dind-externals
-              emptyDir: {}
-            - configMap:
-                name: docker-daemon-config
-              name: daemon-json
+              - name: runner
+                image: ghcr.io/actions/actions-runner:latest
+                command: ["/home/runner/run.sh"]
+            # initContainers:
+            # - name: init-dind-externals
+            #   resources:
+            #     requests:
+            #       memory: 100Mi
+            #     limits:
+            #       memory: 8Gi
+            #   image: ghcr.io/actions/actions-runner:latest
+            #   command: ["cp", "-r", "-v", "/home/runner/externals/.", "/home/runner/tmpDir/"]
+            #   volumeMounts:
+            #     - name: dind-externals
+            #       mountPath: /home/runner/tmpDir
+            # containers:
+            # - name: runner
+            #   resources:
+            #     requests:
+            #       memory: 100Mi
+            #     limits:
+            #       memory: 5Gi
+            #   image: ghcr.io/actions/actions-runner:latest
+            #   command: ["/home/runner/run.sh"]
+            #   env:
+            #     - name: DOCKER_HOST
+            #       value: unix:///var/run/docker.sock
+            #   volumeMounts:
+            #     - name: work
+            #       mountPath: /home/runner/_work
+            #     - name: dind-sock
+            #       mountPath: /var/run
+            # - name: dind
+            #   resources:
+            #     requests:
+            #       memory: 100Mi
+            #     limits:
+            #       memory: 8Gi
+            #   image: ghcr.io/actions/actions-runner:latest
+            #   args:
+            #     - dockerd
+            #     - --host=unix:///var/run/docker.sock
+            #     - --group=$(DOCKER_GROUP_GID)
+            #   env:
+            #     - name: DOCKER_GROUP_GID
+            #       value: "123"
+            #   securityContext:
+            #     privileged: true
+            #   volumeMounts:
+            #     - name: work
+            #       mountPath: /home/runner/_work
+            #     - name: var-lib-docker
+            #       mountPath: /var/lib/docker
+            #     - name: dind-sock
+            #       mountPath: /var/run
+            #     - name: dind-externals
+            #       mountPath: /home/runner/externals
+            #     - mountPath: /etc/docker/daemon.json
+            #       name: daemon-json
+            #       readOnly: true
+            #       subPath: daemon.json
+            # nodeSelector:
+            #   kubernetes.io/os: linux
+            # imagePullSecrets:
+            #   - name: ""
+            # volumes:
+            # - name: work
+            #   emptyDir: {}
+            # - name: var-lib-docker
+            #   ephemeral:
+            #     volumeClaimTemplate:
+            #       spec:
+            #         accessModes:
+            #           - ReadWriteOnce
+            #         resources:
+            #           requests:
+            #             storage: 10Gi
+            # - name: dind-sock
+            #   emptyDir: {}
+            # - name: dind-externals
+            #   emptyDir: {}
+            # - configMap:
+            #     name: docker-daemon-config
+            #   name: daemon-json
   destination:
     server: https://kubernetes.default.svc
     namespace: arc-runners
