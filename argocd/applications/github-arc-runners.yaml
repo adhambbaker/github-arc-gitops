@@ -23,6 +23,13 @@ spec:
           namespace: arc-system
         minRunners: 1
 
+        listenerTemplate:
+          metadata: 
+            annotations: 
+              k8s.grafana.com/scrape: "true"
+              k8s.grafana.com/metrics.portNumber: "8080"
+              k8s.grafana.com/metrics.path: "/metrics"
+
         listenerMetrics:
           counters:
             gha_started_jobs_total:
