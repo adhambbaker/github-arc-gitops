@@ -20,8 +20,8 @@ spec:
       releaseName: arc
       values: |
         podAnnotations:
-          k8s.grafana.com/scrape: true
-          k8s.grafana.com/metrics.portNumber: 8080
+          k8s.grafana.com/scrape: "true"
+          k8s.grafana.com/metrics.portNumber: "8080"
           k8s.grafana.com/metrics.path: "/metrics"
         metrics:
           controllerManagerAddr: ":8080"
