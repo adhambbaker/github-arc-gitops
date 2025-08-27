@@ -17,15 +17,12 @@ spec:
     chart: gha-runner-scale-set-controller
     targetRevision: "0.12.1"
     helm:
-      parameters:
-      - name: podAnnotations."prometheus\.io/scrape"
-        value: "true"
-      - name: podAnnotations."prometheus\.io/path"
-        value: "/metrics"
-      - name: podAnnotations."prometheus\.io/port"
-        value: "8080"
       releaseName: arc
       values: |
+        podAnnotations:
+          k8s.grafana.com/scrape: true
+          k8s.grafana.com/metrics.portNumber: 8080
+          k8s.grafana.com/metrics.path: "/metrics"
         metrics:
           controllerManagerAddr: ":8080"
           listenerAddr: ":8080"
