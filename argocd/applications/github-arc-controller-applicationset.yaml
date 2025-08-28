@@ -24,12 +24,12 @@ spec:
       #   replicaCount: "2"
   template:
     metadata:
-      name: 'github-arc-controller-{{env}}'
+      name: 'github-arc-controller-{{.env}}'
       namespace: openshift-gitops
       finalizers:
         - resources-finalizer.argocd.argoproj.io
       labels:
-        environment: '{{env}}'
+        environment: '{{.env}}'
         component: github-arc-controller
     spec:
       project: default
@@ -43,15 +43,15 @@ spec:
         chart: gha-runner-scale-set-controller
         targetRevision: "0.12.1"
         helm:
-          releaseName: 'arc-{{env}}'
+          releaseName: 'arc-{{.env}}'
           valueFiles:
-          - '$values/values/{{valuesFile}}'
+          - '$values/values/{{.valuesFile}}'
       - repoURL: https://github.com/adhambbaker/github-arc-gitops.git
         targetRevision: main
         ref: values
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{namespace}}'
+        namespace: '{{.namespace}}'
       syncPolicy:
         automated:
           prune: true
