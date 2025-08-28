@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: github-arc-controller-environments
+  name: github-arc-controller-envs
   namespace: openshift-gitops
 spec:
   generators:
@@ -10,18 +10,18 @@ spec:
       - env: dev
         namespace: arc-system-dev
         valuesFile: github-arc-controller-dev-values.yaml
-        syncPolicy: "false"  # Manual sync for dev
+        syncPolicy: false  # Manual sync for dev
         replicaCount: "1"
-      - env: staging
-        namespace: arc-system-staging
-        valuesFile: github-arc-controller-staging-values.yaml
-        syncPolicy: "true"   # Auto sync for staging
-        replicaCount: "1"
-      - env: prod
-        namespace: arc-system-prod
-        valuesFile: github-arc-controller-prod-values.yaml
-        syncPolicy: "false"  # Manual sync for production (safety)
-        replicaCount: "2"
+      # - env: staging
+      #   namespace: arc-system-staging
+      #   valuesFile: github-arc-controller-staging-values.yaml
+      #   syncPolicy: "true"   # Auto sync for staging
+      #   replicaCount: "1"
+      # - env: prod
+      #   namespace: arc-system-prod
+      #   valuesFile: github-arc-controller-prod-values.yaml
+      #   syncPolicy: "false"  # Manual sync for production (safety)
+      #   replicaCount: "2"
   template:
     metadata:
       name: 'github-arc-controller-{{env}}'
