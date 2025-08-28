@@ -21,7 +21,7 @@ spec:
           controllerServiceAccount:
             name: arc-gha-rs-controller
             namespace: arc-system
-          minRunners: 1
+          minRunners: 0
 
           # listenerTemplate:
           #   metadata: 
