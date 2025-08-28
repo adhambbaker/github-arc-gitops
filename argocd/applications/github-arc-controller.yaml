@@ -19,7 +19,7 @@ spec:
     helm:
       releaseName: arc
       valueFiles:
-      - $values/values/github-arc-controller-dev-values
+      - $values/values/github-arc-controller-dev-values.yaml
   - repoURL: https://github.com/adhambbaker/github-arc-gitops
     targetRevision: HEAD
     ref: values
