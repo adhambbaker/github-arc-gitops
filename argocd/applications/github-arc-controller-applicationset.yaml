@@ -52,10 +52,10 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{namespace}}'
-      syncPolicy:
-        automated:
-          prune: "{{syncPolicy}}"
-          selfHeal: "{{syncPolicy}}"
+      # syncPolicy:
+      #   automated:
+      #     prune: "{{syncPolicy}}"
+      #     selfHeal: "{{syncPolicy}}"
         syncOptions:
           - CreateNamespace=true
           - ServerSideApply=true
