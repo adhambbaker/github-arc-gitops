@@ -54,8 +54,8 @@ spec:
         namespace: '{{namespace}}'
       syncPolicy:
         automated:
-          prune: '{{syncPolicy}}'
-          selfHeal: '{{syncPolicy}}'
+          prune: "{{syncPolicy}}"
+          selfHeal: "{{syncPolicy}}"
         syncOptions:
           - CreateNamespace=true
           - ServerSideApply=true
