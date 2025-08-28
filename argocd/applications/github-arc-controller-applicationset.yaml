@@ -12,11 +12,11 @@ spec:
         valuesFile: github-arc-controller-dev-values.yaml
         syncPolicy: false  # Manual sync for dev
         replicaCount: "1"
-      - env: staging
-        namespace: arc-system-staging
-        valuesFile: github-arc-controller-staging-values.yaml
-        syncPolicy: true   # Auto sync for staging
-        replicaCount: "1"
+      # - env: staging
+      #   namespace: arc-system-staging
+      #   valuesFile: github-arc-controller-staging-values.yaml
+      #   syncPolicy: true   # Auto sync for staging
+      #   replicaCount: "1"
       # - env: prod
       #   namespace: arc-system-prod
       #   valuesFile: github-arc-controller-prod-values.yaml
