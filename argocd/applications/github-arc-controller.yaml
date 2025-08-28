@@ -19,10 +19,10 @@ spec:
       helm:
         releaseName: arc
         valueFiles:
-          - $arc-controller/values.yaml
-    - repoURL: https://github.com/adhambbaker/github-arc-gitops.git
+          - $values/github-arc-controller-values.yaml
+    - repoURL: https://github.com/adhambbaker/github-arc-gitops
       targetRevision: main
-      ref: arc-controller
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: arc-system
