@@ -16,10 +16,11 @@ spec:
     repoURL: ghcr.io/actions/actions-runner-controller-charts
     chart: gha-runner-scale-set-controller
     targetRevision: "0.12.1"
+    ref: arc-controller
     helm:
       releaseName: arc
       valueFiles:
-        - arc-controller/values.yaml
+        - $arc-controller/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: arc-system
