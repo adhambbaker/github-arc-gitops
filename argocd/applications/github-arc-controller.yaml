@@ -12,14 +12,6 @@ spec:
       kind: CustomResourceDefinition
       jsonPointers:
         - /spec/preserveUnknownFields
-  # source:
-  #   repoURL: ghcr.io/actions/actions-runner-controller-charts
-  #   chart: gha-runner-scale-set-controller
-  #   targetRevision: "0.12.1"
-  #   helm:
-  #     releaseName: arc
-  #     valueFiles:
-  #       - $values/github-arc-controller-values.yaml
   sources:
     - repoURL: ghcr.io/actions/actions-runner-controller-charts
       chart: gha-runner-scale-set-controller
