@@ -56,7 +56,7 @@ spec:
       #   automated:
       #     prune: "{{syncPolicy}}"
       #     selfHeal: "{{syncPolicy}}"
-        syncOptions:
-          - CreateNamespace=true
-          - ServerSideApply=true
-          - RespectIgnoreDifferences=true
+        # syncOptions:
+        #   - CreateNamespace=true
+        #   - ServerSideApply=true
+        #   - RespectIgnoreDifferences=true
