@@ -1,36 +1,36 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: github-arc-controller
-#   namespace: openshift-gitops
-#   finalizers:
-#     - resources-finalizer.argocd.argoproj.io
-# spec:
-#   project: default
-#   ignoreDifferences:
-#     - group: apiextensions.k8s.io
-#       kind: CustomResourceDefinition
-#       jsonPointers:
-#         - /spec/preserveUnknownFields
-#   sources:
-#   - repoURL: ghcr.io/actions/actions-runner-controller-charts
-#     chart: gha-runner-scale-set-controller
-#     targetRevision: "0.12.1"
-#     helm:
-#       releaseName: arc
-#       valueFiles:
-#       - $values/values/github-arc-controller-values.yaml
-#   - repoURL: https://github.com/adhambbaker/github-arc-gitops
-#     targetRevision: HEAD
-#     ref: values
-#   destination:
-#     server: https://kubernetes.default.svc
-#     namespace: arc-system
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
-#     syncOptions:
-#       - CreateNamespace=true
-#       - ServerSideApply=true
-#       - RespectIgnoreDifferences=true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: github-arc-controller
+  namespace: openshift-gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  ignoreDifferences:
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      jsonPointers:
+        - /spec/preserveUnknownFields
+  sources:
+  - repoURL: ghcr.io/actions/actions-runner-controller-charts
+    chart: gha-runner-scale-set-controller
+    targetRevision: "0.12.1"
+    helm:
+      releaseName: arc
+      valueFiles:
+      - $values/values/github-arc-controller-dev-values
+  - repoURL: https://github.com/adhambbaker/github-arc-gitops
+    targetRevision: HEAD
+    ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: arc-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true
