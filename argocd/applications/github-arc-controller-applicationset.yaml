@@ -15,7 +15,7 @@ spec:
       - env: staging
         namespace: arc-system-staging
         valuesFile: github-arc-controller-staging-values.yaml
-        syncPolicy: "true"   # Auto sync for staging
+        syncPolicy: true   # Auto sync for staging
         replicaCount: "1"
       # - env: prod
       #   namespace: arc-system-prod
