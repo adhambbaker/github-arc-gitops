@@ -84,7 +84,3 @@ spec:
         persistentVolumeClaim:
           claimName: minio-pvc
       restartPolicy: Always
-      terminationGracePeriodSeconds: 30
-      dnsPolicy: ClusterFirst
-      securityContext: {}
-      schedulerName: default-scheduler
