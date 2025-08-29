@@ -9,5 +9,5 @@ resources:
 - base/minio-svc.yaml
 - base/minio-route.yaml
 
-# generators:
-# - ./gen/secret-generator.yaml
+generators:
+- ./gen/secret-generator.yaml
