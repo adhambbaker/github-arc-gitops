@@ -19,13 +19,13 @@ spec:
         app.kubernetes.io/name: minio
     spec:
       containers:
-      - command:
-        - /bin/sh
-        - -c
-        - |
-          mkdir -p /data/thanos && \
-          mkdir -p /data/loki && \
-          /usr/bin/minio server /storage
+      # - command:
+      #   - /bin/sh
+      #   - -c
+      #   - |
+      #     mkdir -p /data/thanos && \
+      #     mkdir -p /data/loki && \
+      #     /usr/bin/minio server /storage
         resources:
           limits:
             cpu: 250m
