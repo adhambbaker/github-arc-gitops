@@ -79,13 +79,13 @@ spec:
                 periodSeconds: 5
                 successThreshold: 1
                 failureThreshold: 3
-              command:
-                - /bin/sh
-                - -c
-                - |
-                  mkdir -p /data/thanos && \
-                  mkdir -p /data/loki && \
-                  /usr/bin/minio server /data
+              # command:
+              #   - /bin/sh
+              #   - -c
+              #   - |
+              #     mkdir -p /data/thanos && \
+              #     mkdir -p /data/loki && \
+              #     /usr/bin/minio server /data
               env:
                 - name: MINIO_ROOT_USER
                   valueFrom:
