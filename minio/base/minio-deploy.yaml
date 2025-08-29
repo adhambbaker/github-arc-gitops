@@ -11,9 +11,9 @@ metadata:
     app.openshift.io/runtime: S3
 spec:
   replicas: 1
-  # selector:
-  #   matchLabels:
-  #     app: minio
+  selector:
+    matchLabels:
+      app: minio
   template:
     metadata:
       labels:
