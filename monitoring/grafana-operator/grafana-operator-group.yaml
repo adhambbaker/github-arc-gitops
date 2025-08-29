@@ -1,10 +1,9 @@
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  generateName: grafana-operator-
+  name: grafana-operator-vlsd8
   namespace: grafana-operator
 spec:
   targetNamespaces:
-  - grafana-operator
-  upgradeStrategy: 
-  - Default
+    - grafana-operator
+  upgradeStrategy: Default
