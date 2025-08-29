@@ -16,8 +16,9 @@
 #     termination: edge
 #     insecureEdgeTerminationPolicy: Redirect
 
-kind: Route
+
 apiVersion: route.openshift.io/v1
+kind: Route
 metadata:
   name: minio-api
   namespace: minio
@@ -33,8 +34,8 @@ spec:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
 ---
-kind: Route
 apiVersion: route.openshift.io/v1
+kind: Route
 metadata:
   name: minio-ui
   namespace: minio
