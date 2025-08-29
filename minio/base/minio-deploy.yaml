@@ -49,6 +49,14 @@ spec:
           value: minio123
         image: minio/minio
         name: minio
+        livenessProbe:
+          tcpSocket:
+            port: 9000
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
         ports:
         - containerPort: 9000
         volumeMounts:
