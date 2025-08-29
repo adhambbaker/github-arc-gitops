@@ -24,7 +24,7 @@ spec:
         - -c
         - |
           mkdir -p /data/thanos && \
-          mkdir -p /data/loki && \
+          mkdir -p /data/loki
       #     /usr/bin/minio server /data
         resources:
           limits:
