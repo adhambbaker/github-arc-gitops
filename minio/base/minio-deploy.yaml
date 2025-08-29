@@ -9,14 +9,6 @@ metadata:
     app.kubernetes.io/name: minio
     app.kubernetes.io/part-of: S3_SUBSYSTEM
     app.openshift.io/runtime: S3
-# spec:
-#   selector:
-#     matchLabels:
-#       app.kubernetes.io/name: minio
-#   template:
-#     metadata:
-#       labels:
-#         app: minio
 spec:
   replicas: 1
   selector:
@@ -57,13 +49,6 @@ spec:
             periodSeconds: 5
             successThreshold: 1
             failureThreshold: 3
-          command:
-            - /bin/sh
-            - -c
-            - |
-              mkdir -p /data/thanos && \
-              mkdir -p /data/loki && \
-              /usr/bin/minio server /data
           env:
             - name: MINIO_ROOT_USER
               valueFrom:
