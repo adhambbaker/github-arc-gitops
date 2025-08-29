@@ -3,10 +3,12 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     app.kubernetes.io/name: minio
-  name: minio
+  name: minio-pvc
+  namespace: minio
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
+  volumeMode: Filesystem

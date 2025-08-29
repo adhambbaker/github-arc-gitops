@@ -8,3 +8,6 @@ resources:
 - base/minio-pvc.yaml
 - base/minio-svc.yaml
 - base/minio-route.yaml
+
+generators:
+- ./gen/secret-generator.yaml
