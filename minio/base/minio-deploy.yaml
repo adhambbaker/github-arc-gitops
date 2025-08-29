@@ -57,11 +57,11 @@ spec:
         # - name: MINIO_SECRET_KEY
         #   value: xxx
         image: minio/minio
-        args:
-          - server
-          - /data
-          - --console-address
-          - :9090
+        # args:
+        #   - server
+        #   - /data
+        #   - --console-address
+        #   - :9090
         name: minio
         livenessProbe:
           tcpSocket:
