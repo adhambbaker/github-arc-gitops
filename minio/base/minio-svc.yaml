@@ -31,4 +31,4 @@ spec:
   ipFamilyPolicy: SingleStack
   sessionAffinity: None
   selector:
-    app: minio
+    app.kubernetes.io/name: minio
