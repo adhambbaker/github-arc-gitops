@@ -56,7 +56,7 @@ spec:
         #   value: minio
         # - name: MINIO_SECRET_KEY
         #   value: xxx
-        image: minio/minio
+        image: quay.io/minio/minio:RELEASE.2023-06-19T19-52-50Z
         args:
           - server
           - /data
