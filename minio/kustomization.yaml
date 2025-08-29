@@ -7,3 +7,4 @@ resources:
 - base/minio-deploy.yaml
 - base/minio-pvc.yaml
 - base/minio-svc.yaml
+- base/minio-route.yaml
