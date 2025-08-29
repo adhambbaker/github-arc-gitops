@@ -26,6 +26,13 @@ spec:
           mkdir -p /data/thanos && \
           mkdir -p /data/loki && \
           /usr/bin/minio server /data
+        resources:
+          limits:
+            cpu: 250m
+            memory: 1Gi
+          requests:
+            cpu: 20m
+            memory: 100Mi
         env:
         - name: MINIO_ACCESS_KEY
           value: minio
