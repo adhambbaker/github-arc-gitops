@@ -24,8 +24,7 @@ spec:
         - -c
         - |
           mkdir -p /data/thanos && \
-          mkdir -p /data/loki && \
-          /usr/bin/minio server /data
+          mkdir -p /data/loki
         resources:
           limits:
             cpu: 250m
