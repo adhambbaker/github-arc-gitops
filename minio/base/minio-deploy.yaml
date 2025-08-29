@@ -73,6 +73,9 @@ spec:
           failureThreshold: 3
         ports:
         - containerPort: 9000
+          protocol: TCP
+        - containerPort: 9090
+          protocol: TCP
         imagePullPolicy: IfNotPresent
         terminationMessagePolicy: File
         volumeMounts:
