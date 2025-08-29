@@ -6,3 +6,5 @@ metadata:
 spec:
   targetNamespaces:
   - grafana-operator
+  upgradeStrategy: 
+  - Default
