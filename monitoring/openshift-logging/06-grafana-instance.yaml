@@ -90,7 +90,6 @@ metadata:
   labels:
     app: grafana-logging
 spec:
-  host: grafana-logging-service-grafana-operator.apps-crc.testing
   to:
     kind: Service
     name: grafana-logging-service
