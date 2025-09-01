@@ -21,47 +21,47 @@ spec:
       maxLines: 1000
     secureJsonData:
       httpHeaderValue1: "Bearer "
----
-apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDataSource
-metadata:
-  name: prometheus-datasource
-  namespace: grafana-operator
-spec:
-  instanceSelector:
-    matchLabels:
-      dashboards: "grafana-logging"
-  datasource:
-    name: Prometheus
-    type: prometheus
-    access: proxy
-    url: https://thanos-querier.openshift-monitoring.svc:9091
-    isDefault: true
-    jsonData:
-      tlsSkipVerify: true
-      timeInterval: "30s"
-      httpMethod: "GET"
-    secureJsonData:
-      httpHeaderValue1: "Bearer "
----
-apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDataSource
-metadata:
-  name: prometheus-user-workload
-  namespace: grafana-operator
-spec:
-  instanceSelector:
-    matchLabels:
-      dashboards: "grafana-logging"
-  datasource:
-    name: Prometheus-UserWorkload
-    type: prometheus
-    access: proxy
-    url: https://thanos-querier.openshift-user-workload-monitoring.svc:9091
-    isDefault: false
-    jsonData:
-      tlsSkipVerify: true
-      timeInterval: "30s"
-      httpMethod: "GET"
-    secureJsonData:
-      httpHeaderValue1: "Bearer "
+# ---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaDataSource
+# metadata:
+#   name: prometheus-datasource
+#   namespace: grafana-operator
+# spec:
+#   instanceSelector:
+#     matchLabels:
+#       dashboards: "grafana-logging"
+#   datasource:
+#     name: Prometheus
+#     type: prometheus
+#     access: proxy
+#     url: https://thanos-querier.openshift-monitoring.svc:9091
+#     isDefault: true
+#     jsonData:
+#       tlsSkipVerify: true
+#       timeInterval: "30s"
+#       httpMethod: "GET"
+#     secureJsonData:
+#       httpHeaderValue1: "Bearer "
+# ---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaDataSource
+# metadata:
+#   name: prometheus-user-workload
+#   namespace: grafana-operator
+# spec:
+#   instanceSelector:
+#     matchLabels:
+#       dashboards: "grafana-logging"
+#   datasource:
+#     name: Prometheus-UserWorkload
+#     type: prometheus
+#     access: proxy
+#     url: https://thanos-querier.openshift-user-workload-monitoring.svc:9091
+#     isDefault: false
+#     jsonData:
+#       tlsSkipVerify: true
+#       timeInterval: "30s"
+#       httpMethod: "GET"
+#     secureJsonData:
+#       httpHeaderValue1: "Bearer "
