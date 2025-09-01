@@ -1,0 +1,81 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argocd-logging-manager
+rules:
+# Grafana Operator permissions
+- apiGroups: ["grafana.integreatly.org"]
+  resources: ["grafanas", "grafanadashboards", "grafanadatasources"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# Loki Operator permissions
+- apiGroups: ["loki.grafana.com"]
+  resources: ["lokistacks"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# Logging Operator permissions
+- apiGroups: ["logging.coreos.com"]
+  resources: ["clusterloggings", "clusterlogforwarders"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# Operator management permissions
+- apiGroups: ["operators.coreos.com"]
+  resources: ["subscriptions", "operatorgroups", "installplans", "clusterserviceversions"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# ConfigMap permissions for monitoring configuration
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  resourceNames: ["cluster-monitoring-config", "user-workload-monitoring-config"]
+# Secret permissions for Loki storage
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["services", "serviceaccounts"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# Deployment permissions for MinIO
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# Route permissions for Grafana
+- apiGroups: ["route.openshift.io"]
+  resources: ["routes"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argocd-logging-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argocd-logging-manager
+subjects:
+- kind: ServiceAccount
+  name: openshift-gitops-argocd-application-controller
+  namespace: openshift-gitops
+---
+# Additional role for managing monitoring namespaces
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argocd-monitoring-namespace-manager
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["get", "list", "watch", "create", "update", "patch"]
+  resourceNames: ["openshift-logging", "grafana-operator", "openshift-operators-redhat", "openshift-monitoring", "openshift-user-workload-monitoring"]
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argocd-monitoring-namespace-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argocd-monitoring-namespace-manager
+subjects:
+- kind: ServiceAccount
+  name: openshift-gitops-argocd-application-controller
+  namespace: openshift-gitops
