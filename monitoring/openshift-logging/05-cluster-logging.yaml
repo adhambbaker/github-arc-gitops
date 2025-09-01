@@ -1,40 +1,40 @@
-apiVersion: logging.coreos.com/v1
-kind: ClusterLogging
-metadata:
-  name: instance
-  namespace: openshift-logging
-spec:
-  managementState: Managed
-  logStore:
-    type: lokistack
-    lokistack:
-      name: logging-loki
-  collection:
-    type: vector
-    vector:
-      nodeSelector:
-        kubernetes.io/os: "linux"
-      resources:
-        limits:
-          memory: 1Gi
-        requests:
-          cpu: 100m
-          memory: 128Mi
-      tolerations:
-      # - effect: NoSchedule
-      #   key: node-role.kubernetes.io/master
-      #   operator: Exists
-      - effect: NoExecute
-        key: node.kubernetes.io/not-ready
-        operator: Exists
-      - effect: NoExecute
-        key: node.kubernetes.io/unreachable
-        operator: Exists
-  visualization:
-    type: ocp-console
-    ocpConsole:
-      logsLimit: 15
----
+# apiVersion: logging.coreos.com/v1
+# kind: ClusterLogging
+# metadata:
+#   name: instance
+#   namespace: openshift-logging
+# spec:
+#   managementState: Managed
+#   logStore:
+#     type: lokistack
+#     lokistack:
+#       name: logging-loki
+#   collection:
+#     type: vector
+#     vector:
+#       nodeSelector:
+#         kubernetes.io/os: "linux"
+#       resources:
+#         limits:
+#           memory: 1Gi
+#         requests:
+#           cpu: 100m
+#           memory: 128Mi
+#       tolerations:
+#       # - effect: NoSchedule
+#       #   key: node-role.kubernetes.io/master
+#       #   operator: Exists
+#       - effect: NoExecute
+#         key: node.kubernetes.io/not-ready
+#         operator: Exists
+#       - effect: NoExecute
+#         key: node.kubernetes.io/unreachable
+#         operator: Exists
+#   visualization:
+#     type: ocp-console
+#     ocpConsole:
+#       logsLimit: 15
+# ---
 # apiVersion: logging.coreos.com/v1
 # kind: ClusterLogForwarder
 # metadata:
