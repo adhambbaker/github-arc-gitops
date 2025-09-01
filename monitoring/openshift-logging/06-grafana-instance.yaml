@@ -1,0 +1,83 @@
+
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana-logging
+  namespace: grafana-operator
+  labels:
+    dashboards: "grafana-logging"
+spec:
+  config:
+    log:
+      mode: "console"
+      level: "warn"
+    auth:
+      disable_login_form: false
+      disable_signout_menu: false
+    auth.anonymous:
+      enabled: true
+      org_role: Viewer
+    security:
+      admin_user: admin
+      admin_password: admin123
+  deployment:
+    spec:
+      replicas: 1
+      template:
+        spec:
+          containers:
+          - name: grafana
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                cpu: 500m
+                memory: 512Mi
+  service:
+    metadata:
+      annotations:
+        # service.beta.openshift.io/serving-cert-secret-name: grafana-tls
+    spec:
+      ports:
+      - name: grafana-http
+        port: 3000
+        protocol: TCP
+        targetPort: 3000
+      type: ClusterIP
+  # ingress:
+  #   metadata:
+  #     annotations:
+  #       route.openshift.io/termination: "reencrypt"
+  #   spec:
+  #     tls:
+  #       termination: reencrypt
+  #       destinationCACertificate: ""
+  #     to:
+  #       kind: Service
+  #       name: grafana-logging-service
+  #       weight: 100
+  #     wildcardPolicy: None
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: grafana-logging
+  namespace: grafana-operator
+  labels:
+    app: grafana-logging
+spec:
+  to:
+    kind: Service
+    name: grafana-logging-service
+    weight: 100
+  port:
+    targetPort: grafana-http
+  # tls:
+  #   termination: reencrypt
+  #   destinationCACertificate: ""
+
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
