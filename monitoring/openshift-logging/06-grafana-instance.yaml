@@ -6,45 +6,68 @@ metadata:
   namespace: grafana-operator
   labels:
     dashboards: "grafana-logging"
+# spec:
+#   config:
+#     log:
+#       mode: "console"
+#       level: "warn"
+#     auth:
+#       disable_login_form: false
+#       disable_signout_menu: false
+#     auth.anonymous:
+#       enabled: true
+#       org_role: Viewer
+#     security:
+#       admin_user: admin
+#       admin_password: admin123
+#   deployment:
+#     spec:
+#       replicas: 1
+#       template:
+#         spec:
+#           containers:
+#           - name: grafana
+#             resources:
+#               requests:
+#                 cpu: 100m
+#                 memory: 128Mi
+#               limits:
+#                 cpu: 500m
+#                 memory: 512Mi
 spec:
   config:
-    log:
-      mode: "console"
-      level: "warn"
     auth:
-      disable_login_form: false
-      disable_signout_menu: false
-    auth.anonymous:
-      enabled: true
-      org_role: Viewer
+      disable_login_form: 'false'
+    log:
+      mode: console
     security:
-      admin_user: admin
-      admin_password: admin123
+      admin_password: start
+      admin_user: root
+  version: 'docker.io/grafana/grafana@sha256:6ac590e7cabc2fbe8d7b8fc1ce9c9f0582177b334e0df9c927ebd9670469440f'
   deployment:
-    spec:
-      replicas: 1
-      template:
-        spec:
-          containers:
-          - name: grafana
-            resources:
-              requests:
-                cpu: 100m
-                memory: 128Mi
-              limits:
-                cpu: 500m
-                memory: 512Mi
-  service:
+    replicas: 1
+    template:
+      spec:
+        containers:
+        - name: grafana
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+  # service:
     # metadata:
     #   annotations:
     #     # service.beta.openshift.io/serving-cert-secret-name: grafana-tls
-    spec:
-      ports:
-      - name: grafana-http
-        port: 3000
-        protocol: TCP
-        targetPort: 3000
-      type: ClusterIP
+    # spec:
+    #   ports:
+    #   - name: grafana-http
+    #     port: 3000
+    #     protocol: TCP
+    #     targetPort: 3000
+    #   type: ClusterIP
   # ingress:
   #   metadata:
   #     annotations:
