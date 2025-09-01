@@ -90,16 +90,13 @@ metadata:
   labels:
     app: grafana-logging
 spec:
+  host: grafana-logging-service-grafana-operator.apps-crc.testing
   to:
     kind: Service
     name: grafana-logging-service
     weight: 100
   port:
-    targetPort: grafana-http
-  # tls:
-  #   termination: reencrypt
-  #   destinationCACertificate: ""
-
+    targetPort: grafana
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
