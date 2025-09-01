@@ -1,29 +1,29 @@
 apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDataSource
+kind: GrafanaDatasource
 metadata:
   name: loki-datasource
   namespace: grafana-operator
-  # annotations:
-  #   argocd.argoproj.io/sync-wave: "5"
 spec:
-  instanceSelector:
-    matchLabels:
-      dashboards: "grafana-logging"
+  allowCrossNamespaceImport: false
   datasource:
-    name: Loki
-    type: loki
     access: proxy
-    url: http://logging-loki-gateway-http.openshift-logging.svc:8080
     isDefault: false
     jsonData:
-      tlsSkipVerify: true
-      timeInterval: "30s"
       maxLines: 1000
+      timeInterval: 30s
+      tlsSkipVerify: true
+    name: loki
     secureJsonData:
-      httpHeaderValue1: "Bearer "
+      httpHeaderValue1: 'Bearer '
+    type: loki
+    url: 'http://logging-loki-gateway-http.openshift-logging.svc:8080'
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana-logging
   plugins:
     - name: grafana-clock-panel
       version: 1.3.0
+  resyncPeriod: 10m0s
 # ---
 # apiVersion: grafana.integreatly.org/v1beta1
 # kind: GrafanaDataSource
