@@ -35,9 +35,9 @@ spec:
                 cpu: 500m
                 memory: 512Mi
   service:
-    metadata:
-      annotations:
-        # service.beta.openshift.io/serving-cert-secret-name: grafana-tls
+    # metadata:
+    #   annotations:
+    #     # service.beta.openshift.io/serving-cert-secret-name: grafana-tls
     spec:
       ports:
       - name: grafana-http
