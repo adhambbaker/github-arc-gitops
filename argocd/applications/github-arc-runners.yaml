@@ -1,32 +1,32 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: github-arc-runners
-  namespace: openshift-gitops
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  sources:
-    - repoURL: ghcr.io/actions/actions-runner-controller-charts
-      chart: gha-runner-scale-set
-      targetRevision: "0.12.1"
-      helm:
-        releaseName: arc-runner-set
-        valueFiles:
-        - $values/values/github-arc-runners-values.yaml
-    - repoURL: https://github.com/adhambbaker/github-arc-gitops
-      targetRevision: HEAD
-      ref: values
-    - repoURL: https://github.com/adhambbaker/github-arc-gitops
-      targetRevision: main
-      path: arc-runners
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: arc-runners
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: github-arc-runners
+#   namespace: openshift-gitops
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: default
+#   sources:
+#     - repoURL: ghcr.io/actions/actions-runner-controller-charts
+#       chart: gha-runner-scale-set
+#       targetRevision: "0.12.1"
+#       helm:
+#         releaseName: arc-runner-set
+#         valueFiles:
+#         - $values/values/github-arc-runners-values.yaml
+#     - repoURL: https://github.com/adhambbaker/github-arc-gitops
+#       targetRevision: HEAD
+#       ref: values
+#     - repoURL: https://github.com/adhambbaker/github-arc-gitops
+#       targetRevision: main
+#       path: arc-runners
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: arc-runners
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
