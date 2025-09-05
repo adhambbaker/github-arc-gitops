@@ -13,7 +13,7 @@ spec:
       jsonPointers:
         - /spec/preserveUnknownFields
   sources:
-  - repoURL: ghcr.io/actions/actions-runner-controller-charts
+  - repoURL: https://github.com/adhambbaker/github-arc
     # chart: gha-runner-scale-set-controller
     # targetRevision: "0.12.1"
     targetRevision: develop
