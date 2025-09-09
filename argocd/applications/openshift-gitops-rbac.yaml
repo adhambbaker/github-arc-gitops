@@ -1,27 +1,27 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: openshift-gitops-rbac
-  namespace: openshift-gitops
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/adhambbaker/github-arc-gitops
-    targetRevision: HEAD
-    path: openshift
-    directory:
-      include: 
-      - "argocd-rbac.yaml"
-      # - "argocd-logging-rbac.yaml"
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: openshift-gitops
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: openshift-gitops-rbac
+#   namespace: openshift-gitops
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/adhambbaker/github-arc-gitops
+#     targetRevision: HEAD
+#     path: openshift
+#     directory:
+#       include: 
+#       - "argocd-rbac.yaml"
+#       # - "argocd-logging-rbac.yaml"
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: openshift-gitops
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
 
